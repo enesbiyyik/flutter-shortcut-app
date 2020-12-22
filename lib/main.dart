@@ -42,14 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisCount: 2,
         scrollDirection: Axis.vertical,
         primary: true,
-        padding: EdgeInsets.all(10),
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 40,
+        padding: EdgeInsets.all(20),
+        crossAxisSpacing: 30,
+        mainAxisSpacing: 30,
         children: <Widget>[
           GestureDetector(
             onTap: () => _launchInWebViewOrVC("https://www.linkedin.com/feed/"),
               child: Container(
-              margin: EdgeInsets.all(12),
+              margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -63,9 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
           GestureDetector(
             onTap: ()=>_launchInWebViewOrVC("https://www.instagram.com/"),
               child: Container(
+                margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image:  AssetImage("images/insta.png"),
@@ -76,9 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
           GestureDetector(
             onTap: ()=>_launchInWebViewOrVC("https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ"),
               child: Container(
+                margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage("images/sp.png"),
@@ -87,11 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://wa.me/905436496034"),
+            onTap: ()=>_launchInWebViewOrVC("https://wa.me/1"),
             child: Container(
+              margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
                   fit: BoxFit.contain,
                   image: AssetImage("images/wp.png"),
