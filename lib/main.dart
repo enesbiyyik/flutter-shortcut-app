@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:device_apps/device_apps.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisSpacing: 30,
         children: <Widget>[
           GestureDetector(
-            onTap: () => _launchInWebViewOrVC("https://www.linkedin.com/feed/"),
+            onTap: () => _launchInWebViewOrVC("https://www.linkedin.com/feed/", context),
               child: Container(
               margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://www.instagram.com/"),
+            onTap: ()=>_launchInWebViewOrVC("https://www.instagram.com/", context),
               child: Container(
                 margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ"),
+            onTap: ()=>_launchInWebViewOrVC("https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ", context),
               child: Container(
                 margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://wa.me/1"),
+            onTap: ()=> DeviceApps.openApp("com.whatsapp"),
             child: Container(
               margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -106,8 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  Future<void> _launchInWebViewOrVC(String url) async {
+  Future<void> _launchInWebViewOrVC(String url, BuildContext context) async {
     if (await canLaunch(url)) {
+        loading(context);
+
       await launch(
         url,
         headers: <String, String>{'my_header_key': 'my_header_value'},
@@ -115,5 +118,21 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+  void loading(BuildContext ctx) {
+    showDialog(
+      context: ctx,
+      barrierDismissible: true,
+      builder: (ctx){
+        return AlertDialog(
+          content: Row(
+            children: [
+              Expanded(flex: 5, child: Container(child: Text("Launching"),)),
+              Expanded(flex: 1, child: Container(child: AspectRatio(aspectRatio: 1/1, child: CircularProgressIndicator()),)),
+            ],
+          ),
+        );
+      }
+    );
   }
 }
