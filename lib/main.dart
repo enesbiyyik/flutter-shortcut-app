@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Shortcuts',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisSpacing: 30,
         children: <Widget>[
           GestureDetector(
-            onTap: () => _launchInWebViewOrVC("https://www.linkedin.com/feed/", context),
+            onTap: () => DeviceApps.openApp("com.linkedin.android"),
               child: Container(
               margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://www.instagram.com/", context),
+            onTap: ()=> DeviceApps.openApp("com.instagram.android"),
               child: Container(
                 margin: EdgeInsets.all(6),
               alignment: Alignment.center,
