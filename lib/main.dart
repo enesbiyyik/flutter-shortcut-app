@@ -2,64 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_apps/device_apps.dart';
 
-List<Widget> shortcuts = [
-    GestureDetector(
-      onTap: () => DeviceApps.openApp("com.linkedin.android"),
-      child: Container(
-        margin: EdgeInsets.all(6),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage("images/li.png"),
-          ),
-        ),
-      ),
-    ),
-    GestureDetector(
-      onTap: () => DeviceApps.openApp("com.instagram.android"),
-      child: Container(
-        margin: EdgeInsets.all(6),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage("images/insta.png"),
-          ),
-        ),
-      ),
-    ),
-    GestureDetector(
-      onTap: () => DeviceApps.openApp("com.spotify.music"),
-      child: Container(
-        margin: EdgeInsets.all(6),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage("images/sp.png"),
-          ),
-        ),
-      ),
-    ),
-    GestureDetector(
-      onTap: () => DeviceApps.openApp("com.whatsapp"),
-      child: Container(
-        margin: EdgeInsets.all(6),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-            fit: BoxFit.contain,
-            image: AssetImage("images/wp.png"),
-          ),
-        ),
-      ),
-    ),
-  ];
 
 void main() {
   runApp(MyApp());
@@ -91,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.all(20),
         crossAxisSpacing: 30,
         mainAxisSpacing: 30,
-        children: shortcuts,
+        children: ItemList.shortcuts,
       ),
     );
   }
@@ -225,29 +168,16 @@ class _AddWebShortcutState extends State<AddWebShortcut> {
     );
   }
   String _urlControl(String url) {
-    Pattern pattern = r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?";
+    Pattern pattern = r"((https?:www\.)|(https?:\/\/))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?";
     RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(url)) return 'Please control the URL';
+    if (!regex.hasMatch(url)) return 'Please control the URL or add https:// to start of url';
     else return null;
   }
   void saveShortcut(){
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      shortcuts.add(
-        GestureDetector(
-          onTap: () => DeviceApps.openApp("com.linkedin.android"),
-          child: Container(
-            margin: EdgeInsets.all(6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage("images/li.png"),
-              ),
-            ),
-          ),
-        ),
+      ItemList.shortcuts.add(
+        UrlShortcutItem(_webUrl, _shortName, Colors.blue),
       );
     } else
     autoControl = true;
@@ -298,4 +228,95 @@ class _AddPhoneShortcutState extends State<AddPhoneShortcut> {
       ),
     );
   }
+}
+
+class UrlShortcutItem extends StatelessWidget {
+
+  UrlShortcutItem( this._url, this._shortName, this.color);
+
+  String _url;
+  String _shortName;
+  Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+          onTap: ()=> launchUrl(),
+          child: Container(
+            margin: EdgeInsets.all(6),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage("images/li.png"),
+              ),
+            ),
+          ),
+        );
+  }
+  launchUrl() async {
+    await launch(_url, headers: <String, String>{'my_header_key': 'my_header_value'},);
+  }
+}
+
+class ItemList{
+  static List<Widget> shortcuts = [
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.linkedin.android"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/li.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.instagram.android"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/insta.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.spotify.music"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/sp.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.whatsapp"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.contain,
+            image: AssetImage("images/wp.png"),
+          ),
+        ),
+      ),
+    ),
+  ];
 }
