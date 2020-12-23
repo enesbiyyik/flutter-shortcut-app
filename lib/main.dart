@@ -37,6 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Shortcuts"),
+        actions: [
+          IconButton(icon: Icon(Icons.add), onPressed: () => options(context)),
+        ],
       ),
       body: GridView.count(
         reverse: true,
@@ -49,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           GestureDetector(
             onTap: () => DeviceApps.openApp("com.linkedin.android"),
-              child: Container(
+            child: Container(
               margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -62,23 +65,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=> DeviceApps.openApp("com.instagram.android"),
-              child: Container(
-                margin: EdgeInsets.all(6),
+            onTap: () => DeviceApps.openApp("com.instagram.android"),
+            child: Container(
+              margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image:  AssetImage("images/insta.png"),
+                  image: AssetImage("images/insta.png"),
                 ),
               ),
             ),
           ),
           GestureDetector(
-            onTap: ()=>_launchInWebViewOrVC("https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ", context),
-              child: Container(
-                margin: EdgeInsets.all(6),
+            onTap: () => _launchInWebViewOrVC(
+                "https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ",
+                context),
+            child: Container(
+              margin: EdgeInsets.all(6),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -90,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           GestureDetector(
-            onTap: ()=> DeviceApps.openApp("com.whatsapp"),
+            onTap: () => DeviceApps.openApp("com.whatsapp"),
             child: Container(
               margin: EdgeInsets.all(6),
               alignment: Alignment.center,
@@ -107,10 +112,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   Future<void> _launchInWebViewOrVC(String url, BuildContext context) async {
     if (await canLaunch(url)) {
-        loading(context);
-
       await launch(
         url,
         headers: <String, String>{'my_header_key': 'my_header_value'},
@@ -119,20 +123,74 @@ class _MyHomePageState extends State<MyHomePage> {
       throw 'Could not launch $url';
     }
   }
-  void loading(BuildContext ctx) {
+
+  void options(BuildContext ctx) {
     showDialog(
-      context: ctx,
-      barrierDismissible: true,
-      builder: (ctx){
-        return AlertDialog(
-          content: Row(
-            children: [
-              Expanded(flex: 5, child: Container(child: Text("Launching"),)),
-              Expanded(flex: 1, child: Container(child: AspectRatio(aspectRatio: 1/1, child: CircularProgressIndicator()),)),
-            ],
-          ),
-        );
-      }
+        context: ctx,
+        barrierDismissible: true,
+        builder: (ctx) {
+          return AlertDialog(
+              content: Container(
+            height: 350,
+            child: Column(
+              children: [
+                RaisedButton(
+                  child: Text("Add Phone Shortcut"),
+                  onPressed: () => null,
+                ),
+                RaisedButton(
+                  child: Text("Add App Shortcut"),
+                  onPressed: () => null,
+                ),
+                RaisedButton(
+                  child: Text("Add Web Shortcut"),
+                  onPressed: () => null,
+                ),
+              ],
+            ),
+          ));
+        });
+  }
+}
+
+class AddWebShortcut extends StatefulWidget {
+  @override
+  _AddWebShortcutState createState() => _AddWebShortcutState();
+}
+
+class _AddWebShortcutState extends State<AddWebShortcut> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+    );
+  }
+}
+
+class AddAppShortcut extends StatefulWidget {
+  @override
+  _AddAppShortcutState createState() => _AddAppShortcutState();
+}
+
+class _AddAppShortcutState extends State<AddAppShortcut> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+    );
+  }
+}
+
+class AddPhoneShortcut extends StatefulWidget {
+  @override
+  _AddPhoneShortcutState createState() => _AddPhoneShortcutState();
+}
+
+class _AddPhoneShortcutState extends State<AddPhoneShortcut> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }
