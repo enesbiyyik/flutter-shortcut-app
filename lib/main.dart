@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text("Shortcuts"),
         actions: [
-          IconButton(icon: Icon(Icons.add), onPressed: () => options(context)),
+          IconButton(icon: Icon(Icons.add), onPressed: () => addNew(context)),
         ],
       ),
       body: GridView.count(
@@ -49,107 +49,108 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.all(20),
         crossAxisSpacing: 30,
         mainAxisSpacing: 30,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => DeviceApps.openApp("com.linkedin.android"),
-            child: Container(
-              margin: EdgeInsets.all(6),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/li.png"),
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => DeviceApps.openApp("com.instagram.android"),
-            child: Container(
-              margin: EdgeInsets.all(6),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/insta.png"),
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => _launchInWebViewOrVC(
-                "https://open.spotify.com/playlist/37i9dQZF1ELVdVGVW8KilZ",
-                context),
-            child: Container(
-              margin: EdgeInsets.all(6),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/sp.png"),
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => DeviceApps.openApp("com.whatsapp"),
-            child: Container(
-              margin: EdgeInsets.all(6),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: AssetImage("images/wp.png"),
-                ),
-              ),
-            ),
-          ),
-        ],
+        children: shortcuts,
       ),
     );
   }
 
-  Future<void> _launchInWebViewOrVC(String url, BuildContext context) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  static List<Widget> shortcuts = [
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.linkedin.android"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/li.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.instagram.android"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/insta.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.spotify.music"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("images/sp.png"),
+          ),
+        ),
+      ),
+    ),
+    GestureDetector(
+      onTap: () => DeviceApps.openApp("com.whatsapp"),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+            fit: BoxFit.contain,
+            image: AssetImage("images/wp.png"),
+          ),
+        ),
+      ),
+    ),
+  ];
 
-  void options(BuildContext ctx) {
+  void addNew(BuildContext ctx) {
     showDialog(
-        context: ctx,
-        barrierDismissible: true,
-        builder: (ctx) {
-          return AlertDialog(
-              content: Container(
+      context: ctx,
+      barrierDismissible: true,
+      builder: (ctx) {
+        return AlertDialog(
+          content: Container(
             height: 350,
             child: Column(
               children: [
-                RaisedButton(
-                  child: Text("Add Phone Shortcut"),
-                  onPressed: () => null,
+                Container(
+                  child: RaisedButton(
+                    child: Text("Add Phone Shortcut"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddPhoneShortcut())),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                  ),
                 ),
-                RaisedButton(
-                  child: Text("Add App Shortcut"),
-                  onPressed: () => null,
+                Container(
+                  child: RaisedButton(
+                    child: Text("Add App Shortcut"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddAppShortcut())),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                  ),
                 ),
-                RaisedButton(
-                  child: Text("Add Web Shortcut"),
-                  onPressed: () => null,
+                Container(
+                  child: RaisedButton(
+                    child: Text("Add Web Shortcut"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddWebShortcut())),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                  ),
                 ),
               ],
             ),
-          ));
-        });
+          )
+        );
+      }
+    );
   }
 }
 
@@ -161,8 +162,10 @@ class AddWebShortcut extends StatefulWidget {
 class _AddWebShortcutState extends State<AddWebShortcut> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Web & Url Shortcut"),
+      ),
     );
   }
 }
@@ -175,9 +178,7 @@ class AddAppShortcut extends StatefulWidget {
 class _AddAppShortcutState extends State<AddAppShortcut> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }
 
@@ -189,8 +190,6 @@ class AddPhoneShortcut extends StatefulWidget {
 class _AddPhoneShortcutState extends State<AddPhoneShortcut> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }
